@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+#
+#
+# Autor: Gabriel R. Salles
+# 
+# OVPN - Instalador
+#
+#
+# Descrição:
+# Utilizado para realizar a instalação e configuração do OpenVPN
+#
+#
+# Como utilizar:
+# Para configurar a sua VPN através do OpenVPN primeiramente deverá escolher qual tipo de VPN será instalada.
+# Para isso execute o ovpn-install com um usuário privilegiado e dê permissão de execução ao script.
+#	
+#	#chmod a+x ovpn-install 
+#	#./ovpn-install
+#
+#
+
+
+#########################################
+#		variaveis		#
+
+ovpn_client_file="modulos/ovpn-client"
+ovpn_server_file="modulos/ovpn-server"
+l2tp_client_file="modulos/l2tp-client"
+l2tp_server_file="modulos/l2tp-server"
+
+ovpn_client="Não disponível"
+ovpn_server="Não disponível"
+l2tp_client="Não disponível"
+l2tp_server="Não disponível"
+
+#					#
+#########################################
+#########################################
+#		validador		#
+
+[[ -r modulos/ovpn-client ]]&&ovpn_client="Disponível" && source $ovpn_client_file
+[[ -r modulos/ovpn-server ]]&&ovpn_server="Disponível" && source $ovpn_server_file
+[[ -r modulos/l2tp-client ]]&&l2tp_client="Disponível" && source $l2tp_client_file
+[[ -r modulos/l2tp-server ]]&&l2tp_server="Disponível" && source $l2tp_server_file
+
+
+#					#
+#########################################
+
+while :;do
+
+clear
+
+echo -n "
+
+
+Seja Bem Vindo ao Instalador VPN
+
+Qual o tipo de VPN você deseja instalar?
+
+[1] OpenVPN - Client/Server	[$ovpn_client]
+[2] OpenVPN - SSL		[$ovpn_server]
+[3] L2TP/IPSec - Server/Server 	[$l2tp_client]
+[4] L2TP/IPSec - Client/Server 	[$l2tp_server]
+									
+
+aperte [X] para sair
+
+
+Opção: "
+read opcao1
+
+
+	case $opcao1 in
+		"1")ovpnclient
+			;;
+		"2")ovpnserver
+			;;
+		"3")l2tpclient
+			;;
+		"4")l2tpserver
+			;;
+		"x" | "X")exit 0
+			;;
+		"*")clear
+			echo "
+			Opção Inválida, tente novamente
+			"
+	esac
+
+done
