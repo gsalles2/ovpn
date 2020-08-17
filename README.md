@@ -48,14 +48,14 @@ Entre como root ou execute como sudo os próximos passos:
 2. Execute o script:
 	'.\ovpn-install.sh'
 
-3. Insira o IP Público ao qual o servidor irá se comunicar com o client.
+3. Insira o IP Público ou DNS ao qual o cliente irá se comunicar com o servidor.
 4. Será gerado os certificados e instalado os serviços necessários.
 
 	Caso não sejam encontrados, será instalado os binários:
 	yum install openvpn
 	yum install lzo
 
-5. Ao final irá informar o último procedimento necessário que é a adição da regra de liberação no PUPPET.
+5. Ao final irá informar o último procedimento necessário que é a adição da regra de liberação no firewall.
 
 ### OVPN USER
 
