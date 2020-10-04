@@ -3,11 +3,11 @@
 
 # ARQUIVOS DE CONFIGURAÇÃO
 
-source ovpn.cfg
+source /etc/openvpn/ovpn.d/ovpn.cfg
 
 # VARIABLES
 
-versao="2.8"
+versao="2.9"
 
 
 #
@@ -60,16 +60,16 @@ case $1 in
 
 	-a)
 
-	[[ -r $UKEYS ]]|| echo "Sem acesso a pasta $UKEYS"
-	[[ -r $UKEYS/ca.crt ]]|| echo "Certificado ca.crt não encontrado ou sem permissÃ£o de leitura - pasta $UKEYS/ca.crt"
-	ovpnca=$(cat $UKEYS/ca.crt)
+	[[ -r $PKEYS ]]|| echo "Sem acesso a pasta $PKEYS"
+	[[ -r $PKEYS/ca.crt ]]|| echo "Certificado ca.crt não encontrado ou sem permissão de leitura - pasta $PKEYS/ca.crt"
+	ovpnca=$(cat $PKEYS/ca.crt)
 
-	[[ -r $UKEYS/ta.key ]]|| echo "Chave ta.key não encontrada ou sem permissÃ£o de leitura - pasta $UKEYS/ta.key"
-	ovpnta=$(cat $UKEYS/ta.key)
+	[[ -r $PKEYS/ta.key ]]|| echo "Chave ta.key não encontrada ou sem permissão de leitura - pasta $PKEYS/ta.key"
+	ovpnta=$(cat $PKEYS/ta.key)
 	
-	[[ -r $UKEYS/server.crt ]]|| echo "Certificado server.crt não encontrado ou sem permissão de leitura - pasta $UKEYS/server.crt"
+	[[ -r $PKEYS/server.crt ]]|| echo "Certificado server.crt não encontrado ou sem permissão de leitura - pasta $PKEYS/server.crt"
 
-#
+	#
 ##
 ### INICIO DO SCRIPT
 ##
@@ -101,7 +101,7 @@ case $1 in
 	echo ".:Gerado arquivo CSR:."
 
 
-	$($SSL x509 -req -days 7300 -in $USERTEMP/$usuario.csr -CA $UKEYS/ca.crt -CAkey $UKEYS/ca.key -out $USERTEMP/$usuario.crt)
+	$($SSL x509 -req -days 7300 -in $USERTEMP/$usuario.csr -CA $PKEYS/ca.crt -CAkey $PKEYS/ca.key -out $USERTEMP/$usuario.crt)
 	ovpncrt=$(cat $USERTEMP/$usuario.crt)			# Certificado do usuário para o arquivo .ovpn
 	echo "	.:Gerado Certificado do usuÃ¡rio:."
 	
@@ -117,7 +117,7 @@ case $1 in
 $(echo "client
 remote $SERVIDOR
 dev tun
-PROTOCOLO $PROTOCOLO
+proto $PROTOCOLO
 nobind
 pull
 port $PORTA
@@ -222,59 +222,6 @@ fi
 	-c)while :;do
 
 clear
-
-echo "           OVPN - Monitoramento de conexões"
-
-
-# Função para listar a quantidade de usuários e criar o filtro
-listar_usuario(){
-
-$(grep "\." $LOG/$STATUS > $USERTEMP/monitor_temp )
-filtro1=$(cat $USERTEMP/monitor_temp | wc -l )
-
-logados=$(($filtro1 / 2))               # Divide o valor do filtro1 por 2 que é o resultado de usuarios logados
-
-echo "
-
-Usuários logados $logados
-
-"
-
-filtro2=$(($logados + 1))
-}
-
-# Função para tratar os dados da lista de usuário
-
-usuarios_ativos(){
-
-nome=$( cat $USERTEMP/monitor_temp | head -$filtro2 | tail -1 | cut -d"," -f2 )
-iplocal=$( cat $USERTEMP/monitor_temp | head -$filtro2 | tail -1 | cut -d"," -f1 )
-ipexterno=$( cat $USERTEMP/monitor_temp | head -$filtro2 | tail -1 | cut -d"," -f3 | cut -d":" -f1 )
-data=$( cat $USERTEMP/monitor_temp | head -$filtro2 | tail -1 | cut -d"," -f4 )
-}
-
-
-listar_usuario
-
-# Aqui começa o loop que lista os usuários e seus dados de conexão
-
-
-echo "USUÁRIO   | IP VPN        | IP EXTERNO            | DATA"
-while [ $filtro2 -le $filtro1 ]; do
-
-        usuarios_ativos
-
-echo "$nome     | $iplocal      | $ipexterno    | $data"
-
-filtro2=$(($filtro2 + 1 ))
-
-done
-
-echo "
-"
-rm -f $USERTEMP/monitor_temp
-
-# FIM DA PARTE DO MONITORAMENTO
 
 sleep 3
 done

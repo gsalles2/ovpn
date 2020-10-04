@@ -1,0 +1,46 @@
+server-generator(){
+
+source ../ovpn.d/ovpn.cfg
+
+if [ $REDEINTERNA == "YES" ];then
+
+ROTA="push \"ping-restart 3600\
+push \"route $LOCALOVPN $MASCLOCALOVPN\"
+push \"dhcp-option DNS $DNSREMOTOA\"
+push \"dhcp-option DNS $DNSREMOTOB\"
+push \"dhcp-opton gateway $GWREMOTO\"
+"
+fi
+
+# OBS: Variavel iplocal é definida no inicio desse script pelo usuário
+# TODO - Enviar variavel iplocal para o arquivo .conf
+
+echo "
+local $iplocal
+port $PORTA
+proto $PROTOCOLO
+
+dev tun
+
+tls-server
+ca $PKEYS/ca.crt
+cert $PKEYS/server.crt
+key $PKEYS/server.key
+dh $PKEYS/dh1024.pem
+tls-auth $PKEYS/ta.key 0
+
+mode server
+tls-server
+client-to-client
+
+server $REDEOVPN $MASCOVPN
+
+$ROTA
+
+float
+comp-lzo
+
+status $STATUS
+log-append $LOG
+verb $LOGV
+}

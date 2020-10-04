@@ -1,5 +1,7 @@
 cert-generator(){
 
+source ../ovpn.d/ovpn.cfg
+
 echo ".:CRIANDO PASTA PARA AS CHAVES:."
 $(mkdir $ukeys)
 $(mkdir $pkeys)
