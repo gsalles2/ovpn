@@ -3,40 +3,40 @@ cert-generator(){
 source ../ovpn.d/ovpn.cfg
 
 echo ".:CRIANDO PASTA PARA AS CHAVES:."
-$(mkdir $ukeys)
-$(mkdir $pkeys)
-cd $pkeys
+$(mkdir $UKEYS)
+$(mkdir $PKEYS)
+cd $PKEYS
 
 echo ".:CRIANDO PASTA DE LOGS:."
-$(mkdir $log)
+$(mkdir $LOG)
 
 # TODO ------------------------------  VALIDAR CRIACAO DA PASTA
 
 echo ".:GERANDO CERTIFICADO:."
 
-$($ssl genrsa -out ca.key 4096)
-$($ssl req -x509 -new -nodes -key ca.key -sha256 -days $dias -out ca.crt -subj "/C=BR/ST=Rio_de_Janeiro/L=Rio de_janeiro/O='$EMPRESA'/OU='$EMPRESA/CN=RootAuthority/emailAddress='$EMAIL'")
+$($SSL genrsa -out ca.key 4096)
+$($SSL req -x509 -new -nodes -key ca.key -sha256 -days $DIAS -out ca.crt -subj "/C=BR/ST=Rio_de_Janeiro/L=Rio de_janeiro/O='$EMPRESA'/OU='$EMPRESA/CN=RootAuthority/emailAddress='$EMAIL'")
 
 
 # TODO ------------------------------  VALIDAR CRIACAO DO CERTIFICADO
 
 echo ".:GERAR CERTIFICADO CSR:."
 
-$($ssl genrsa -out server.key 2048)
-$($ssl req -new -sha256 -key server.key -subj "/C=BR/ST=Rio_de_Janeiro/L=Rio de_janeiro/O=EMPRESA/OU='$EMPRESA'/CN=vpnserver/emailAddress='$EMAIL'" -out server.csr)
+$($SSL genrsa -out server.key 2048)
+$($SSL req -new -sha256 -key server.key -subj "/C=BR/ST=Rio_de_Janeiro/L=Rio de_janeiro/O=EMPRESA/OU='$EMPRESA'/CN=vpnserver/emailAddress='$EMAIL'" -out server.csr)
 
-$($ssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days $dias -sha256)
+$($SSL x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days $DIAS -sha256)
 
 
 # TODO ------------------------------  VALIDAR CRIACAO DO CERTIFICADO CSR
 
 echo ".:GERAR DEFFIE HELLMAN:."
 	
-$($ssl dhparam -out dh1024.pem -5 1024)
+$($SSL dhparam -out dh1024.pem -5 1024)
 
 echo ".:GERANDO CHAVE TA:."
 
-$($ovpn --genkey --secret ta.key)
+$($OVPN --genkey --secret ta.key)
 
 
 # TODO ------------------------------  VALIDAR CRIACAO DO DEFFIE HELLMAN
