@@ -1,6 +1,6 @@
 ovpnclient(){
 
-# version = 3.8
+# version = 3.9
 
 clear
 
@@ -38,19 +38,30 @@ fi
 
 # GERAR CERTIFICADO
 
-server-generator
 cert-generator
 
-# ARQUIVO SERVER.CONF
+# ARQUIVO .CONF
 
+server-generator
 
 # Configurando serviço do OpenVPN para iniciar
 
-$(systemctl enable openvpn\@$OVPNCONF)
+service=(echo $OVPNCONF | cut -d / -f4 | cut -d . -f1)
+$(systemctl enable openvpn\@$service)
 [[ $? == 1 ]]&& echo "Serviço não iniciado com o SO"
 
-$(systemctl start openvpn\@$OVPNCONF)
+$(systemctl start openvpn\@$service)
 [[ $? == 1 ]]&& echo "Serviço não iniciado com sucesso"
+
+echo "
+Instalador Finalizado
+
+"
+
+echo "Pressione ENTER para voltar ao menu e X para finalizar o instalador"
+read final
+
+[[$final == "X" || "x"]]&&exit 0
 
 final="0"
 
