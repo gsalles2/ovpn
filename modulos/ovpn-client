@@ -4,7 +4,7 @@ ovpnclient(){
 
 clear
 
-source cert-generator
+source ovpn.d/cert-generator
 source ovpn.d/ovpn.cfg
 
 
@@ -28,7 +28,7 @@ if [ -e $OVPN ];then
 	sleep 3
 
 else
-	echo ".:Pacote OPENVPN não instalado:.
+	echo ".:Pacote OPENVPN não instalado:."
 	exit 4
 	
 # TODO - Criar validação do tipo do sistema operacional
