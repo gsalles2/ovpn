@@ -4,9 +4,9 @@ ovpnclient(){
 
 clear
 
-source ovpn.d/cert-generator
+source modulos/cert-generator
+source modulos/server-generator
 source ovpn.d/ovpn.cfg
-
 
 # VALIDANDO SE ESTÁ COM USUÁRIO ROOT
 if [ $(id -u) == 0 ]; then
@@ -38,11 +38,11 @@ fi
 
 # GERAR CERTIFICADO
 
+server-generator
 cert-generator
 
 # ARQUIVO SERVER.CONF
 
-server-generator
 
 # Configurando serviço do OpenVPN para iniciar junto com o Windows iniciando o serviço
 
