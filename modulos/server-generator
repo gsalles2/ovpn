@@ -1,7 +1,5 @@
 server-generator(){
 
-source ovpn.d/ovpn.cfg
-
 if [ $REDEINTERNA == "YES" ];then
 
 ROTA="push \"ping-restart 3600\"
