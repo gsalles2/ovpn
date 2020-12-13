@@ -42,5 +42,5 @@ comp-lzo
 
 status $STATUS
 log-append $LOG
-verb $LOGV
+verb $LOGV"
 }
