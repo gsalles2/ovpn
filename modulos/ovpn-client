@@ -1,6 +1,6 @@
 ovpnclient(){
 
-# versão = 3.6
+# version = 3.8
 
 clear
 
@@ -44,12 +44,12 @@ cert-generator
 # ARQUIVO SERVER.CONF
 
 
-# Configurando serviço do OpenVPN para iniciar junto com o Windows iniciando o serviço
+# Configurando serviço do OpenVPN para iniciar
 
-$(systemctl enable openvpn\@vpnusers)
+$(systemctl enable openvpn\@$OVPNCONF)
 [[ $? == 1 ]]&& echo "Serviço não iniciado com o SO"
 
-$(systemctl start openvpn\@vpnusers)
+$(systemctl start openvpn\@$OVPNCONF)
 [[ $? == 1 ]]&& echo "Serviço não iniciado com sucesso"
 
 final="0"

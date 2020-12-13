@@ -4,7 +4,7 @@ source ovpn.d/ovpn.cfg
 
 if [ $REDEINTERNA == "YES" ];then
 
-ROTA="push \"ping-restart 3600\
+ROTA="push \"ping-restart 3600\"
 push \"route $LOCALOVPN $MASCLOCALOVPN\"
 push \"dhcp-option DNS $DNSREMOTOA\"
 push \"dhcp-option DNS $DNSREMOTOB\"
@@ -42,5 +42,5 @@ comp-lzo
 
 status $STATUS
 log-append $LOG
-verb $LOGV"
+verb $LOGV" > $OVPNCONF
 }
