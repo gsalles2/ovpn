@@ -7,3 +7,5 @@
 14062020 [ovpn-user][gabriel]: Removido as opções register-dns e block do arquivo pois estava dando erro de conexão com eles
 14062020 [ovpn-user][gabriel]: v2.6 - Adição da opção de criação do link na pasta sbin
 14062020 [ovpn-user][gabriel]: v2.7 - Reparado erro do source ovpn.cfg
+13122020 [ovpn-client][gabriel]: v3.9 - Reparo na inicialização do serviço, reparo na inicialização da função de criação do arquivo .conf
+13122020 [serve-generator][gabriel]: - Reparo nas sintaxes do arquivo

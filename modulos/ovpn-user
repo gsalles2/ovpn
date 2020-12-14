@@ -1,0 +1,4 @@
+install-ovpn-user(){
+$(cp -ri ovpn.d/ /etc/openvpn/)
+$(ln -sf /etc/openvpn/ovpn.d/ovpn-user.sh /sbin/ovpn-user)
+}
