@@ -46,7 +46,7 @@ server-generator
 
 # Configurando serviço do OpenVPN para iniciar
 
-service=(echo $OVPNCONF | cut -d / -f4 | cut -d . -f1)
+service=$(echo $OVPNCONF | cut -d / -f4 | cut -d . -f1)
 $(systemctl enable openvpn\@$service)
 [[ $? == 1 ]]&& echo "Serviço não iniciado com o SO"
 
